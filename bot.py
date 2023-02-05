@@ -88,6 +88,7 @@ def new_game(update: Update, context: CallbackContext):
 
         game = gm.new_game(update.message.chat)
         game.starter = update.message.from_user
+        game.owner.append(update.message.from_user.id)
         game.mode = DEFAULT_GAMEMODE
         send_async(context.bot, chat_id,
                    text=_("Created a new game! Join the game with /join "
@@ -719,19 +720,19 @@ def reset_waiting_time(bot, player):
 dispatcher.add_handler(InlineQueryHandler(reply_to_query))
 dispatcher.add_handler(ChosenInlineResultHandler(process_result, pass_job_queue=True))
 dispatcher.add_handler(CallbackQueryHandler(select_game))
-dispatcher.add_handler(CommandHandler('unostart', start_game, pass_args=True, pass_job_queue=True))
+dispatcher.add_handler(CommandHandler('start', start_game, pass_args=True, pass_job_queue=True))
 dispatcher.add_handler(CommandHandler('new', new_game))
 dispatcher.add_handler(CommandHandler('kill', kill_game))
 dispatcher.add_handler(CommandHandler('join', join_game))
 dispatcher.add_handler(CommandHandler('leave', leave_game))
-dispatcher.add_handler(CommandHandler('unokick', kick_player))
+dispatcher.add_handler(CommandHandler('kick', kick_player))
 dispatcher.add_handler(CommandHandler('open', open_game))
 dispatcher.add_handler(CommandHandler('close', close_game))
 dispatcher.add_handler(CommandHandler('enable_translations',
                                       enable_translations))
 dispatcher.add_handler(CommandHandler('disable_translations',
                                       disable_translations))
-dispatcher.add_handler(CommandHandler('unoskip', skip_player))
+dispatcher.add_handler(CommandHandler('skip', skip_player))
 dispatcher.add_handler(CommandHandler('notify_me', notify_me))
 simple_commands.register()
 settings.register()
